@@ -1,8 +1,9 @@
 // import logo from './logo.svg';
 import './App.css';
 import Navbar from './components/navbar/Navbar';
-import UploadImage from './components/Upload/UploadImage';
-import UploadMeta from './components/Upload/UploadMeta'
+import UploadImage from './components/upload/UploadImage';
+import UploadMeta from './components/upload/UploadMeta'
+import Mint from './components/mint/Mint';
 
 function App() {
    return (
@@ -11,6 +12,7 @@ function App() {
          <div className='container2 mx-auto'>
             <UploadImage />
             <UploadMeta />
+            <Mint />
          </div>
       </div>
    );
