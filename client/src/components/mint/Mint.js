@@ -8,7 +8,7 @@ const Mint = () => {
    const handleMintClick = async () => {
       setLoading(true);
       try {
-         const response = await axios.post('http://localhost:3000/mint');
+         const response = await axios.post('http://localhost:4000/mint');
          // Handle successful response here
          response.status === 200 && console.log(response.data);
       } catch (error) {

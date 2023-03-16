@@ -13,6 +13,8 @@ app.use(fileUpload());
 const appDir = path.dirname(require.main.filename);
 const uploadDir = path.join(appDir, "uploads");
 
+const { renameImage } = require("./renameFiles");
+
 app.post("/upload", (req, res) => {
    console.log("req.files >>>", req.files)
    const { files } = req;
@@ -39,6 +41,11 @@ app.post("/upload", (req, res) => {
    res.status(200).send("Files uploaded successfully.");
 });
 
+app.post("/mint", (req, res) => {
+   console.log(uploadDir)
+   renameImage(uploadDir + "/images/");
+   res.status(200).send('Minting Successful');
+});
 
 app.post('/json', (req, res) => {
    const { file } = req.files;
