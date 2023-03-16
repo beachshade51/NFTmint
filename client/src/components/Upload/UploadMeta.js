@@ -19,7 +19,7 @@ const props = {
 };
 const UploadMeta = () => (
    <div className='p-4'>
-      <p className='p-2'>Upload metadata</p>
+      <p className='p-2'>Upload metadata <br></br><span className='text-gray-500 text-sm'>should be named as metadata.json</span></p>
       <Upload {...props}>
          <Button icon={<UploadOutlined />}>Click to Upload</Button>
       </Upload>

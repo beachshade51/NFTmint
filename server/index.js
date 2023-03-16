@@ -47,25 +47,26 @@ app.post("/upload", (req, res) => {
 
 app.post("/mint", async (req, res) => {
    console.log("udd", uploadDir)
-   renameImage(uploadDir + "/images/");
-   res.status(200).send('Minting Successful');
-   let imageDir = uploadDir + "/images/";
-   let response = await pinDirectoryToPinata(imageDir);
-   console.log("response", response)
+   // renameImage(uploadDir + "/images/");
+   // let imageDir = uploadDir + "/images/";
+   // let response = await pinDirectoryToPinata(imageDir);
+   // console.log("response", response)
 
 
-   const filePath = path.join(uploadDir + "/metadata/", "metadata.json");
-   fs.readFile(filePath, 'utf8', function (err, data) {
-      if (err) throw err;
-      let obj = JSON.parse(data);
-      // console.log(obj[0].Plaques)
+   // const filePath = path.join(uploadDir + "/metadata/", "metadata.json");
+   // fs.readFile(filePath, 'utf8', function (err, data) {
+   //    if (err) throw err;
+   //    let obj = JSON.parse(data);
+   //    // console.log(obj[0].Plaques)
 
-      if (response) {
-         console.log("response.data.totalNumber", response.totalNumber)
+   //    if (response) {
+   //       console.log("response.data.totalNumber", response.totalNumber)
 
-         pinMetaDataToPinata(response.data.IpfsHash, response.totalNumber, obj);
-      }
-   });
+   //       pinMetaDataToPinata(response.data.IpfsHash, response.totalNumber, obj);
+   //    }
+   // });
+
+   res.status(200).send('Mint Successful');
 
 });
 
