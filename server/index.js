@@ -5,6 +5,8 @@ const fs = require("fs");
 const path = require("path");
 
 const app = express()
+
+app.use(express.json());
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
@@ -14,6 +16,8 @@ const appDir = path.dirname(require.main.filename);
 const uploadDir = path.join(appDir, "uploads");
 
 const { renameImage } = require("./renameFiles");
+const { pinDirectoryToPinata } = require("./imagesToPinata");
+const { pinMetaDataToPinata } = require("./metadataToPinata");
 
 app.post("/upload", (req, res) => {
    console.log("req.files >>>", req.files)
@@ -41,14 +45,36 @@ app.post("/upload", (req, res) => {
    res.status(200).send("Files uploaded successfully.");
 });
 
-app.post("/mint", (req, res) => {
-   console.log(uploadDir)
+app.post("/mint", async (req, res) => {
+   console.log("udd", uploadDir)
    renameImage(uploadDir + "/images/");
    res.status(200).send('Minting Successful');
+   let imageDir = uploadDir + "/images/";
+   let response = await pinDirectoryToPinata(imageDir);
+   console.log("response", response)
+
+
+   const filePath = path.join(uploadDir + "/metadata/", "metadata.json");
+   fs.readFile(filePath, 'utf8', function (err, data) {
+      if (err) throw err;
+      let obj = JSON.parse(data);
+      // console.log(obj[0].Plaques)
+
+      if (response) {
+         console.log("response.data.totalNumber", response.totalNumber)
+
+         pinMetaDataToPinata(response.data.IpfsHash, response.totalNumber, obj);
+      }
+   });
+
 });
 
 app.post('/json', (req, res) => {
    const { file } = req.files;
+
+   console.log(file);
+   // console.log(JSON.parse(file));
+
    if (!file) {
       return res.status(400).send('No file uploaded');
    }
@@ -67,6 +93,7 @@ app.post('/json', (req, res) => {
       }
       res.status(200).send('File uploaded successfully');
    });
+
 });
 
 app.listen(4000, () => {

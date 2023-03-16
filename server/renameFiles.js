@@ -12,7 +12,7 @@ function renameImage(folderPath) {
 
          const oldPath = path.join(folderPath, file);
          const newPath = path.join(folderPath, `${start}${fileInfo.ext}`);
-         console.log(oldPath, newPath)
+         // console.log(oldPath, newPath)
 
          fs.renameSync(oldPath, newPath);
 
