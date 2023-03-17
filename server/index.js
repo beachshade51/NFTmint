@@ -3,6 +3,7 @@ const fileUpload = require("express-fileupload");
 const cors = require("cors");
 const fs = require("fs");
 const path = require("path");
+const fsx = require('fs-extra')
 
 const app = express()
 
@@ -14,6 +15,7 @@ app.use(fileUpload());
 
 const appDir = path.dirname(require.main.filename);
 const uploadDir = path.join(appDir);
+
 
 const { renameImage } = require("./renameFiles");
 const { pinDirectoryToPinata } = require("./imagesToPinata");
@@ -44,12 +46,26 @@ app.post("/upload", (req, res) => {
    res.status(200).send("Files uploaded successfully.");
 });
 
+const emptyDir = (dir) => {
+   fsx.emptyDir(dir, err => {
+      if (err) return console.error(err)
+      console.log(`Files removed from ${dir}`)
+   })
+
+}
+
+const clearUploadDir = () => {
+   emptyDir(path.join(__dirname, "images"))
+   emptyDir(path.join(__dirname, "metadata"))
+   emptyDir(path.join(__dirname, "metadatas"))
+   // emptyDir(__dirname + "/metadata")
+   // emptyDir(__dirname + "/metadatas")
+}
+
 app.post("/mint", async (req, res) => {
-   console.log("udd", uploadDir)
    renameImage(uploadDir + "/images/");
    let imageDir = uploadDir + "/images/";
    let response = await pinDirectoryToPinata(imageDir);
-   console.log("response from mint", response)
 
 
 
@@ -68,14 +84,16 @@ app.post("/mint", async (req, res) => {
             res.status(400).send('Mint Failed');
          }
       }
+      clearUploadDir();
    });
+
 });
+
+
+
 
 app.post('/json', (req, res) => {
    const { file } = req.files;
-
-   console.log(file);
-   // console.log(JSON.parse(file));
 
    if (!file) {
       return res.status(400).send('No file uploaded');

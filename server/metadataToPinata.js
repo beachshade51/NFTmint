@@ -43,8 +43,6 @@ const getAttribute = (key, value) => {
 const pinMetaDataToPinata = async (ipfsHash, number, sampleJson) => {
    try {
 
-      // console.log("pinata", number, sampleJson)
-
       const url = `https://api.pinata.cloud/pinning/pinFileToIPFS`;
       for (let i = 0; i < number; i++) {
 
@@ -75,8 +73,6 @@ const pinMetaDataToPinata = async (ipfsHash, number, sampleJson) => {
             });
          }
 
-         console.log("reached here")
-
          return await mintNFT(url, data, files, i);
 
       }
@@ -89,7 +85,6 @@ const pinMetaDataToPinata = async (ipfsHash, number, sampleJson) => {
 async function mintNFT(url, data, files, j) {
    try {
 
-      // console.log("reached here hahaha 1", url, data, files)
       let res = await axios.post(url,
          data, {
          headers: {
@@ -100,26 +95,18 @@ async function mintNFT(url, data, files, j) {
       }
       )
 
-      console.log("reached here 2", res.data)
 
       if (res.data) {
 
-         console.log("printing i", j, files.length);
          console.log(`https://gateway.pinata.cloud/ipfs/${res.data.IpfsHash}/${j}.json`);
-         // let txn = await smartContract.mintNFT(signer.address, `https://gateway.pinata.cloud/ipfs/${res.data.IpfsHash}/${j}.json`);
-         // console.log(txn.hash);
+         let txn = await smartContract.mintNFT(signer.address, `https://gateway.pinata.cloud/ipfs/${res.data.IpfsHash}/${j}.json`);
+         console.log("txn hash", txn.hash);
 
-         console.log("reached here 3")
 
       }
 
-      return "mint success"
-
-
    } catch (error) {
-      console.log("reached here 4")
       console.log(error)
-      return false
    }
 }
 

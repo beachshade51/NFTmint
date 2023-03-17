@@ -31,6 +31,7 @@ const Mint = () => {
             openNotification(notificationData)
          }
       } catch (error) {
+         setMinting(false);
          const notificationData = {
             message: 'Mint Failed',
             description: "You have failed minting your NFTs",
@@ -42,8 +43,8 @@ const Mint = () => {
          }
          openNotification(notificationData)
       } finally {
-         setLoading();
-         setMinting(!mint);
+         setLoading(false);
+         setMinting(false);
       }
    };
 
