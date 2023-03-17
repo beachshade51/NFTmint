@@ -42,6 +42,9 @@ const getAttribute = (key, value) => {
 
 const pinMetaDataToPinata = async (ipfsHash, number, sampleJson) => {
    try {
+
+      // console.log("pinata", number, sampleJson)
+
       const url = `https://api.pinata.cloud/pinning/pinFileToIPFS`;
       for (let i = 0; i < number; i++) {
 
@@ -57,7 +60,7 @@ const pinMetaDataToPinata = async (ipfsHash, number, sampleJson) => {
          pinJson["attributes"].push(getAttribute('Frames', sampleJson[i].Frames));
          pinJson["attributes"].push(getAttribute('Backgrounds', sampleJson[i].Backgrounds));
 
-         console.log(pinJson)
+         // console.log(pinJson)
 
          checkDir(i, pinJson);
 
@@ -74,8 +77,8 @@ const pinMetaDataToPinata = async (ipfsHash, number, sampleJson) => {
 
          console.log("reached here")
 
+         await mintNFT(url, data, files, i);
 
-         await mintNFT(url, data, files);
       }
    }
    catch (error) {
@@ -83,7 +86,7 @@ const pinMetaDataToPinata = async (ipfsHash, number, sampleJson) => {
    }
 }
 
-async function mintNFT(url, data, files) {
+async function mintNFT(url, data, files, j) {
    try {
 
       // console.log("reached here hahaha 1", url, data, files)
@@ -97,22 +100,27 @@ async function mintNFT(url, data, files) {
       }
       )
 
-      // console.log(res)
+      console.log("reached here 2", res.data)
 
-      console.log("reached here 2")
+      if (res.data) {
 
-      for (let i = 0; i < files.length; i++) {
-         console.log(`https://gateway.pinata.cloud/ipfs/${res.data.IpfsHash}/${i}.json`);
-         let txn = await smartContract.mintNFT(signer.address, `https://gateway.pinata.cloud/ipfs/${res.data.IpfsHash}/${i}.json`);
+         // for (let j = 0; j < files.length; j++) {
+         console.log("printing i", j, files.length);
+         console.log(`https://gateway.pinata.cloud/ipfs/${res.data.IpfsHash}/${j}.json`);
+         let txn = await smartContract.mintNFT(signer.address, `https://gateway.pinata.cloud/ipfs/${res.data.IpfsHash}/${j}.json`);
          console.log(txn.hash);
-      }
 
-      console.log("reached here 3")
+         // }
+
+         console.log("reached here 3")
+
+      }
 
 
    } catch (error) {
       console.log("reached here 4")
       console.log(error)
+      return false
    }
 }
 

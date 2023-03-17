@@ -28,7 +28,7 @@ const pinDirectoryToPinata = async (src) => {
       })
       return {
          data: response.data,
-         totalNumber: files.length - 1
+         totalNumber: files.length
       }
    } catch (error) {
       console.log(error);

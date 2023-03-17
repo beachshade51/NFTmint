@@ -25,7 +25,8 @@ const Mint = () => {
       try {
          const response = await axios.post('http://localhost:4000/mint');
          // Handle successful response here
-         if (response.status === 200) {
+         if (response.data === 'Mint Successful') {
+            console.log(response)
             openNotification()
             console.log("ehehhehe")
             console.log(response.data);

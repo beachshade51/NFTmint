@@ -49,23 +49,26 @@ app.post("/mint", async (req, res) => {
    renameImage(uploadDir + "/images/");
    let imageDir = uploadDir + "/images/";
    let response = await pinDirectoryToPinata(imageDir);
-   console.log("response", response)
+   console.log("response from mint", response)
+
 
 
    const filePath = path.join(uploadDir + "/metadata/", "metadata.json");
-   fs.readFile(filePath, 'utf8', function (err, data) {
+   fs.readFile(filePath, 'utf8', async function (err, data) {
       if (err) throw err;
       let obj = JSON.parse(data);
 
       if (response) {
          console.log("response.data.totalNumber", response.totalNumber)
 
-         pinMetaDataToPinata(response.data.IpfsHash, response.totalNumber, obj);
+         if (await pinMetaDataToPinata(response.data.IpfsHash, response.totalNumber, obj, res)) {
+            // console.log("Minted Successfully server");
+         }
+         else {
+            res.status(400).send('Mint Failed');
+         }
       }
    });
-
-   res.status(200).send('Mint Successful');
-
 });
 
 app.post('/json', (req, res) => {
