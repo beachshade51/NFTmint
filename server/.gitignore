@@ -31,3 +31,5 @@ server/uploads/metadata/*
 
 server/uploads/metadatas/
 server/uploads/metadatas/*
+
+server/.env
