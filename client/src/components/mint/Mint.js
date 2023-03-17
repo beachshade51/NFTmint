@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { SmileOutlined, FrownOutlined } from '@ant-design/icons';
-import { Button, notification } from 'antd';
+import { Button, Form, notification } from 'antd';
 
 const Mint = () => {
    const [loading, setLoading] = useState(false);
@@ -45,6 +45,7 @@ const Mint = () => {
       } finally {
          setLoading(false);
          setMinting(false);
+         // Form.resetFields();
       }
    };
 
