@@ -23,13 +23,10 @@ yarn-debug.log*
 yarn-error.log*
 
 
-uploads/images/*
-uploads/metadata/*
+images/*
+metadata/*
 
-server/uploads/images/*
-server/uploads/metadata/*
-
-server/uploads/metadatas/
-server/uploads/metadatas/*
+metadatas/*
 
 server/.env
+.env

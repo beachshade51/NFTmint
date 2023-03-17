@@ -13,7 +13,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(fileUpload());
 
 const appDir = path.dirname(require.main.filename);
-const uploadDir = path.join(appDir, "uploads");
+const uploadDir = path.join(appDir);
 
 const { renameImage } = require("./renameFiles");
 const { pinDirectoryToPinata } = require("./imagesToPinata");
@@ -26,7 +26,7 @@ app.post("/upload", (req, res) => {
       return res.status(400).send("No files were uploaded.");
    }
 
-   const uploadDir = path.join(__dirname, "uploads/images");
+   const uploadDir = path.join(__dirname, "images");
    if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir);
    }
@@ -81,7 +81,7 @@ app.post('/json', (req, res) => {
    if (file.mimetype !== 'application/json') {
       return res.status(400).send('File must be in JSON format');
    }
-   const uploadDir = path.join(__dirname, 'uploads/metadata');
+   const uploadDir = path.join(__dirname, 'metadata');
    if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir);
    }

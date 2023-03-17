@@ -13,7 +13,7 @@ fs = require('fs');
 
 require("dotenv").config()
 
-const metadataDir = path.join(__dirname, "uploads/metadatas");
+const metadataDir = path.join("metadatas");
 const provider = new ethers.providers.JsonRpcProvider(process.env.RPC_URL);
 const signer = new ethers.Wallet(process.env.SIGNER_PRIVATE_KEY, provider);
 const smartContract = new ethers.Contract(contractAddress, ABI, signer);
@@ -21,7 +21,7 @@ const smartContract = new ethers.Contract(contractAddress, ABI, signer);
 
 const pinMetaDataToPinata = async (ipfsHash, number, sampleJson) => {
    const url = `https://api.pinata.cloud/pinning/pinFileToIPFS`;
-   for (let i = 0; i < number; i++) {
+   for (let i = 0; i <= number; i++) {
 
       let pinJson = {
          "name": `React.0#${i}`,
@@ -59,6 +59,11 @@ const pinMetaDataToPinata = async (ipfsHash, number, sampleJson) => {
       });
    }
 
+   ToPinataMint(data, url);
+
+}
+
+const ToPinataMint = async (data, url) => {
    try {
       let res = await axios.post(url,
          data, {
@@ -69,9 +74,8 @@ const pinMetaDataToPinata = async (ipfsHash, number, sampleJson) => {
          }
       }
       )
-      console.log("res.data", res.data);
 
-      for (let i = 0; i < files.length; i++) {
+      for (let i = 0; i <= files.length; i++) {
          console.log(`https://gateway.pinata.cloud/ipfs/${res.data.IpfsHash}/${i}.json`);
          // let txn = await smartContract.mintNFT(signer.address, `https://gateway.pinata.cloud/ipfs/${res.data.IpfsHash}/${i}.json`);
       }
@@ -80,10 +84,7 @@ const pinMetaDataToPinata = async (ipfsHash, number, sampleJson) => {
    } catch (error) {
       console.log(error)
    }
-
-
 }
-
 
 const getAttribute = (key, value) => {
    return {
