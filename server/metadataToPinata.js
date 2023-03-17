@@ -59,11 +59,6 @@ const pinMetaDataToPinata = async (ipfsHash, number, sampleJson) => {
       });
    }
 
-   ToPinataMint(data, url);
-
-}
-
-const ToPinataMint = async (data, url) => {
    try {
       let res = await axios.post(url,
          data, {

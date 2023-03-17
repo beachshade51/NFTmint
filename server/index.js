@@ -20,7 +20,6 @@ const { pinDirectoryToPinata } = require("./imagesToPinata");
 const { pinMetaDataToPinata } = require("./metadataToPinata");
 
 app.post("/upload", (req, res) => {
-   console.log("req.files >>>", req.files)
    const { files } = req;
    if (!files || Object.keys(files).length === 0) {
       return res.status(400).send("No files were uploaded.");
