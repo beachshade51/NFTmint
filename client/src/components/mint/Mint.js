@@ -1,40 +1,49 @@
 import { useState } from 'react';
 import axios from 'axios';
-import { SmileOutlined } from '@ant-design/icons';
+import { SmileOutlined, FrownOutlined } from '@ant-design/icons';
 import { Button, notification } from 'antd';
 
 const Mint = () => {
    const [loading, setLoading] = useState(false);
    const [api, contextHolder] = notification.useNotification();
-   const openNotification = () => {
-      api.open({
-         message: 'Mint Success',
-         description:
-            'Congratulations! You have successfully minted your NFTs',
-         icon: (
-            <SmileOutlined
-               style={{
-                  color: '#108ee9',
-               }}
-            />
-         ),
-      });
+   const [mint, setMinting] = useState(false);
+   const openNotification = (data) => {
+      api.open(data);
    };
    const handleMintClick = async () => {
       setLoading(true);
+      setMinting(!mint);
       try {
          const response = await axios.post('http://localhost:4000/mint');
          // Handle successful response here
+         console.log(response.data, "response.dataj")
          if (response.data === 'Mint Successful') {
             console.log(response)
-            openNotification()
-            console.log("ehehhehe")
-            console.log(response.data);
+            const notificationData = {
+               message: 'Mint Success',
+               description: "Congratulations! You have successfully minted your NFTs",
+               icon: (<SmileOutlined
+                  style={{
+                     color: '#108ee9',
+                  }}
+               />)
+            }
+            openNotification(notificationData)
          }
       } catch (error) {
-         // Handle error here
+         const notificationData = {
+            message: 'Mint Failed',
+            description: "You have failed minting your NFTs",
+            icon: (<FrownOutlined
+               style={{
+                  color: '#108ee9',
+               }}
+            />)
+         }
+         openNotification(notificationData)
       } finally {
          setLoading();
+         setMinting(!mint);
       }
    };
 
@@ -42,7 +51,7 @@ const Mint = () => {
       <div className='p-4'>
          {contextHolder}
          <Button loading={loading} onClick={handleMintClick}>
-            Mint
+            {mint ? "Minting" : "Mint"}
          </Button>
       </div>
    );

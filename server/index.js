@@ -61,8 +61,8 @@ app.post("/mint", async (req, res) => {
       if (response) {
          console.log("response.data.totalNumber", response.totalNumber)
 
-         if (await pinMetaDataToPinata(response.data.IpfsHash, response.totalNumber, obj, res)) {
-            // console.log("Minted Successfully server");
+         if (await pinMetaDataToPinata(response.data.IpfsHash, response.totalNumber, obj)) {
+            res.status(200).send('Mint Successful');
          }
          else {
             res.status(400).send('Mint Failed');
