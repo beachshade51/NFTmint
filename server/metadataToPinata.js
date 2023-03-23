@@ -49,7 +49,7 @@ const pinMetaDataToPinata = async (ipfsHash, number, sampleJson) => {
       for (let i = 0; i < number; i++) {
 
          let pinJson = {
-            "name": `React.0#${i}`,
+            "name": `${sampleJson[i].name}`,
             "image": `https://gateway.pinata.cloud/ipfs/${ipfsHash}/${i}.jpeg`,
             "description": "Awesome NFT Created by sid21.0",
             "attributes": []
@@ -100,8 +100,8 @@ async function mintNFT(url, data, j) {
       if (res.data) {
 
          console.log(`https://gateway.pinata.cloud/ipfs/${res.data.IpfsHash}/${j}.json`);
-         let txn = await smartContract.mintNFT(signer.address, `https://gateway.pinata.cloud/ipfs/${res.data.IpfsHash}/${j}.json`);
-         console.log("txn hash", txn.hash);
+         // let txn = await smartContract.mintNFT(signer.address, `https://gateway.pinata.cloud/ipfs/${res.data.IpfsHash}/${j}.json`);
+         // console.log("txn hash", txn.hash);
 
       }
 
