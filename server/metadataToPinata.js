@@ -100,8 +100,8 @@ async function mintNFT(url, data, j) {
       if (res.data) {
 
          console.log(`https://gateway.pinata.cloud/ipfs/${res.data.IpfsHash}/${j}.json`);
-         // let txn = await smartContract.mintNFT(signer.address, `https://gateway.pinata.cloud/ipfs/${res.data.IpfsHash}/${j}.json`);
-         // console.log("txn hash", txn.hash);
+         let txn = await smartContract.mintNFT(signer.address, `https://gateway.pinata.cloud/ipfs/${res.data.IpfsHash}/${j}.json`);
+         console.log("txn hash", txn.hash);
 
       }
 
