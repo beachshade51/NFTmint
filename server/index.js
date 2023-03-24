@@ -58,8 +58,6 @@ const clearUploadDir = () => {
    emptyDir(path.join(__dirname, "images"))
    emptyDir(path.join(__dirname, "metadata"))
    emptyDir(path.join(__dirname, "metadatas"))
-   // emptyDir(__dirname + "/metadata")
-   // emptyDir(__dirname + "/metadatas")
 }
 
 app.post("/mint", async (req, res) => {
@@ -67,54 +65,52 @@ app.post("/mint", async (req, res) => {
    let imageDir = uploadDir + "/images/";
    let response = await pinDirectoryToPinata(imageDir);
 
+   if (response) {
+      console.log("response.data.totalNumber", response.totalNumber)
 
-
-   const filePath = path.join(uploadDir + "/metadata/", "metadata.json");
-   fs.readFile(filePath, 'utf8', async function (err, data) {
-      if (err) throw err;
-      let obj = JSON.parse(data);
-
-      if (response) {
-         console.log("response.data.totalNumber", response.totalNumber)
-
-         if (await pinMetaDataToPinata(response.data.IpfsHash, response.totalNumber, obj)) {
-            res.status(200).send('Mint Successful');
-         }
-         else {
-            res.status(400).send('Mint Failed');
-         }
+      if (await pinMetaDataToPinata(response.data.IpfsHash, response.totalNumber)) {
+         res.status(200).send('Mint Successful');
       }
-      clearUploadDir();
-   });
-
+      else {
+         res.status(400).send('Mint Failed');
+      }
+   }
+   // clearUploadDir();
 });
+
+
 
 
 
 
 app.post('/json', (req, res) => {
-   const { file } = req.files;
 
-   if (!file) {
-      return res.status(400).send('No file uploaded');
+   const { files } = req;
+   if (!files || Object.keys(files).length === 0) {
+      return res.status(400).send("No files were uploaded.");
    }
-   if (file.mimetype !== 'application/json') {
-      return res.status(400).send('File must be in JSON format');
-   }
-   const uploadDir = path.join(__dirname, 'metadata');
+
+
+   const uploadDir = path.join(__dirname, "metadata");
    if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir);
    }
-   const filePath = path.join(uploadDir, file.name);
-   file.mv(filePath, (err) => {
-      if (err) {
-         console.error(err);
-         return res.status(500).send(err);
-      }
-      res.status(200).send('File uploaded successfully');
+
+   const uploadedFiles = Object.values(files);
+   uploadedFiles.forEach((file) => {
+      const filePath = path.join(uploadDir, file.name);
+      file.mv(filePath, (err) => {
+         if (err) {
+            console.error(err);
+            return res.status(500).send(err);
+         }
+      });
    });
 
+   res.status(200).send("Files uploaded successfully.");
 });
+
+
 
 app.listen(4000, () => {
    console.log("Server is listening on port 4000");
