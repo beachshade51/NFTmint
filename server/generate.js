@@ -1,4 +1,5 @@
 const fs = require('fs');
+const sharp = require('sharp');
 
 const traits = {
    icons: ['🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼', '🐨', '🐯', '🦁', '🐮', '🐷', '🐸', '🐵', '🐔', '🐧', '🐦', '🐤', '🐣', '🐥', '🦆', '🦅', '🦉', '🦇', '🐺', '🐗', '🐴', '🦄', '🐝', '🐛', '🦋', '🐌', '🐚', '🐞', '🐜', '🕷', '🦂'],
@@ -16,7 +17,7 @@ function generateRandomTrait(traitType) {
 function generateRandomNFT() {
    const nft = {
       name: 'sid',
-      description: 'Awesome NFT Created by sid21.0',
+      description: 'Awesome NFT\'s Created by Xid',
       attributes: [
          {
             trait_type: 'Icons',
@@ -46,10 +47,25 @@ function generateRandomNFT() {
 function generateAndSaveNFTs(count) {
    for (let i = 0; i < count; i++) {
       const nft = generateRandomNFT();
-      const fileName = `${i}.json`;
-      fs.writeFileSync(`metadatas/${fileName}`, JSON.stringify(nft));
+      const fileName = `metadatas/${i}.json`;
+      fs.writeFileSync(fileName, JSON.stringify(nft));
       console.log(`Saved NFT to file: ${fileName}`);
    }
 }
 
-generateAndSaveNFTs(100);
+
+
+
+function createCopyOfImage(count) {
+
+   for (let i = 0; i < count; i++) {
+
+      fs.copyFile('images/0.jpeg', `images/${i}.jpeg`, (err) => {
+         if (err) throw err;
+         console.log(`${count}.jpeg was copied to destination`);
+      });
+
+   }
+}
+createCopyOfImage(500);
+generateAndSaveNFTs(500);
