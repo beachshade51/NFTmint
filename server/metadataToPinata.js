@@ -30,22 +30,25 @@ const checkDir = async () => {
    }
 }
 
-const saveMetaData = async (ipfsHash, i) => {
-   try {
-      const data = await fs.promises.readFile(`metadata/${i}.json`);
+const saveMetaData = async (ipfsHash, number) => {
+   for (let i = 0; i < number; i++) {
 
-      let IPFSimage = {
-         "image": `https://gateway.pinata.cloud/ipfs/${ipfsHash}/${i}.jpeg`,
+      try {
+         const data = await fs.promises.readFile(`metadata/${i}.json`);
+
+         let IPFSimage = {
+            "image": `https://gateway.pinata.cloud/ipfs/${ipfsHash}/${i}.jpeg`,
+         }
+
+         const originalJson = JSON.parse(data);
+         originalJson.image = IPFSimage.image
+         const modifiedJson = JSON.stringify(originalJson, null, 2);
+         const newPath = `${metadataDir}/${i}.json`;
+         await fs.promises.writeFile(newPath, modifiedJson);
+         console.log(`Successfully wrote modified JSON to ${newPath}`);
+      } catch (err) {
+         console.log(err);
       }
-
-      const originalJson = JSON.parse(data);
-      originalJson.image = IPFSimage.image
-      const modifiedJson = JSON.stringify(originalJson, null, 2);
-      const newPath = `${metadataDir}/${i}.json`;
-      await fs.promises.writeFile(newPath, modifiedJson);
-      console.log(`Successfully wrote modified JSON to ${newPath}`);
-   } catch (err) {
-      console.log(err);
    }
 }
 
@@ -53,8 +56,8 @@ const pinMetaDataToPinata = async (ipfsHash, number) => {
    try {
 
       await checkDir();
+      await saveMetaData(ipfsHash, number);
       for (let i = 0; i < number; i++) {
-         await saveMetaData(ipfsHash, i);
 
          const url = `https://api.pinata.cloud/pinning/pinFileToIPFS`;
 

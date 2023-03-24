@@ -75,7 +75,7 @@ app.post("/mint", async (req, res) => {
          res.status(400).send('Mint Failed');
       }
    }
-   // clearUploadDir();
+   clearUploadDir();
 });
 
 
