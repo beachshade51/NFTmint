@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  api:
+    container_name: api-nft-minter
+    restart: unless-stopped
+    image: api-nft-minter:1.0.0
+    build:
+      context: client
+      target: production
+      dockerfile: Dockerfile
+    ports:
+      - 4000:4000
+    networks:
+      - shared-networks
+
+  client:
+    container_name: nft-minter-client
+    restart: unless-stopped
+    image: nft-minter-client:1.0.0
+    build:
+      context: client
+      target: production
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    depends_on:
+      - api
+    networks:
+      - shared-networks
+
+networks:
+  shared-networks:
