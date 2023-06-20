@@ -11,9 +11,6 @@ NFTmint
 * npm i
 * node index.js
 
-
-# Server
-
 ### Setup
 
 Configure environment variables
