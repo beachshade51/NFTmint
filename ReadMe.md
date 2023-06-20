@@ -1,4 +1,4 @@
-#NFTmint
+NFTmint
 
 ## Client
 
